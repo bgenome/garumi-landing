@@ -3,177 +3,942 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Garumi - Know before you pay the shop</title>
-  <meta name="description" content="Early access for BRZ, GR86, G37, and Q60 owners. VIN clarity, symptom checks, and invoice sanity - before you spend." />
+  <meta name="theme-color" content="#0c0d10" />
+  <title>Garumi | You pay $29 for a written car check</title>
+  <meta name="description" content="You pay $29 once for a founder-reviewed written check for Subaru BRZ, Toyota GR86, Infiniti G37, and Infiniti Q60 owners. VIN profile, symptom check, invoice sanity, and parts fitment. Written reply within 24 hours." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0b0d10;
-      --card: #141820;
-      --line: #243041;
-      --text: #e8eef7;
-      --muted: #9aa8bc;
-      --accent: #3dd6c6;
-      --accent-2: #6ea8ff;
-      --danger: #ff7a59;
+      --bg: #0c0d10;
+      --card: #161a21;
+      --card-2: #1c212b;
+      --line: #313846;
+      --text: #f4f6f8;
+      --muted: #c5ccd6;
+      --accent: #e4b15c;
+      --accent-2: #f2cb7a;
+      --ink: #1c1408;
+      --shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
     }
+
     * { box-sizing: border-box; }
+
+    html {
+      color-scheme: dark;
+      scroll-behavior: smooth;
+      scroll-padding-top: 84px;
+    }
+
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 80% -10%, #1a2740 0%, transparent 55%), var(--bg);
+      font-family: Barlow, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(900px 420px at 100% -8%, rgba(228, 177, 92, 0.14), transparent 58%),
+        var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.55;
+      font-size: 1.05rem;
     }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
-    .badge {
-      display: inline-flex; gap: 8px; align-items: center;
-      border: 1px solid var(--line); background: rgba(61,214,198,.08);
-      color: var(--accent); border-radius: 999px; padding: 6px 12px; font-size: 13px;
+
+    .skip {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      z-index: 50;
+      background: var(--accent);
+      color: var(--ink);
+      font-weight: 800;
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      text-decoration: none;
     }
-    h1 { font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.1; margin: 18px 0 12px; letter-spacing: -0.03em; }
-    .lead { color: var(--muted); font-size: 1.125rem; max-width: 40rem; }
-    .cars { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 28px; }
-    .cars span {
-      border: 1px solid var(--line); background: var(--card); border-radius: 10px;
-      padding: 8px 12px; font-size: 14px; color: var(--text);
+
+    .skip:focus { top: 12px; }
+
+    .wrap {
+      width: min(1120px, calc(100% - 2.5rem));
+      margin-inline: auto;
     }
-    .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; }
-    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+    .bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(12, 13, 16, 0.92);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+    }
+
+    .bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-height: 68px;
+    }
+
+    .brand {
+      flex: none;
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      font-size: 1.35rem;
+    }
+
+    .bar nav {
+      display: none;
+      gap: 1.1rem;
+      margin-left: auto;
+    }
+
+    .bar nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+
+    .bar nav a:hover { color: var(--text); text-decoration: underline; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      padding: 0.85rem 1.1rem;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:visited { color: var(--ink); }
+    .btn:hover { background: var(--accent-2); }
+
+    .btn:focus-visible,
+    .brand:focus-visible,
+    .bar nav a:focus-visible,
+    summary:focus-visible,
+    .text-link:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+
+    .btn-small {
+      width: auto;
+      flex: none;
+      margin-left: auto;
+      min-height: 42px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    .hero { padding: 1.75rem 0 2.5rem; }
+
+    .hero-grid {
+      display: grid;
+      gap: 1.35rem;
+      align-items: start;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.55rem;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { text-wrap: balance; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3.3vw, 2.85rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+    }
+
+    h1 .pay {
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .lead {
+      margin: 0.9rem 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 42rem;
+    }
+
+    .cars {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      list-style: none;
+      margin: 1.1rem 0 0;
+      padding: 0;
+    }
+
+    .cars li {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 999px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .price-card {
+      background: linear-gradient(180deg, #231c14 0%, #141820 42%);
+      border: 1px solid rgba(228, 177, 92, 0.55);
+      border-radius: 18px;
+      padding: 1.15rem 1.15rem 1.2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .amount {
+      margin: 0.15rem 0 0.1rem;
+      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      font-size: clamp(4.2rem, 16vw, 5.4rem);
+      font-weight: 800;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+    }
+
+    .once {
+      margin: 0 0 0.9rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .includes-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .includes {
+      list-style: none;
+      margin: 0 0 1rem;
+      padding: 0;
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .includes li {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 600;
+    }
+
+    .includes li::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 2px;
+      background: var(--accent);
+      flex: none;
+    }
+
+    .micro {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .section { padding: 3rem 0; border-top: 1px solid var(--line); }
+
+    h2 {
+      margin: 0 0 0.7rem;
+      font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+    }
+
+    h3 { margin: 0 0 0.35rem; font-size: 1.12rem; line-height: 1.3; }
+
+    .intro {
+      margin: 0 0 1.15rem;
+      color: var(--muted);
+      max-width: 44rem;
+    }
+
+    .split, .cards, .steps, .why-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
+
     .card {
-      background: linear-gradient(180deg, #171c26, #12161e);
-      border: 1px solid var(--line); border-radius: 18px; padding: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.1rem 1.15rem 1.15rem;
     }
-    .card h2 { margin: 0 0 10px; font-size: 1.15rem; }
-    .list { margin: 0; padding: 0; list-style: none; }
-    .list li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--muted); }
-    .list li:last-child { border-bottom: 0; }
-    .list strong { color: var(--text); display: block; }
-    label { display: block; font-size: 13px; color: var(--muted); margin: 12px 0 6px; }
+
+    .card p, .step p, .why-grid p { margin: 0; color: var(--muted); }
+
+    .card ul, .side ul {
+      margin: 0.8rem 0 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+    }
+
+    .card li, .side li { margin: 0.55rem 0; }
+
+    .card-for { border-top: 3px solid var(--accent); }
+    .card-not { background: var(--card-2); }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card-not .tag { color: var(--muted); }
+
+    .sample {
+      background: #12151b;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.1rem 1.1rem 1.25rem;
+    }
+
+    .sample-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.7rem;
+      align-items: center;
+      padding-bottom: 0.85rem;
+      margin-bottom: 0.9rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .example-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      padding: 0.32rem 0.6rem;
+    }
+
+    .sample h3 { margin: 0; font-size: 1.25rem; }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 7.2rem 1fr;
+      gap: 0.4rem 0.75rem;
+      margin: 0 0 1rem;
+    }
+
+    .meta dt { margin: 0; color: var(--muted); }
+    .meta dd { margin: 0; font-weight: 700; }
+
+    .redacted {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      background: #0c0f14;
+      border: 1px dashed #4a5568;
+      border-radius: 6px;
+      padding: 0.08rem 0.4rem;
+    }
+
+    .sample h4 {
+      margin: 1rem 0 0.3rem;
+      font-size: 1rem;
+    }
+
+    .sample p { margin: 0.25rem 0 0; color: var(--muted); }
+    .sample ul { margin: 0.4rem 0 0; padding-left: 1.15rem; color: var(--muted); }
+    .sample li { margin: 0.35rem 0; }
+
+    .note {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .steps { list-style: none; margin: 0; padding: 0; }
+
+    .step .num {
+      display: block;
+      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      color: var(--accent);
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .time {
+      display: inline-block;
+      margin: 0.45rem 0 0.55rem;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .trust {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.2rem 1.15rem;
+    }
+
+    .trust p { margin: 0; color: var(--muted); max-width: 48rem; }
+
+    .faq { display: grid; gap: 0.65rem; }
+
+    details {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.35rem 0.95rem 0.2rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary span { flex: 1; }
+
+    summary::after {
+      content: "+";
+      color: var(--accent);
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1;
+      flex: none;
+    }
+
+    details[open] summary::after { content: "-"; }
+
+    details p {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+      max-width: 46rem;
+    }
+
+    .request-grid { display: grid; gap: 1.25rem; align-items: start; }
+
+    .side .lockup {
+      margin: 0.4rem 0 0.2rem;
+      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      font-size: clamp(3rem, 10vw, 4rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem 1rem 1.15rem;
+    }
+
+    .fields { display: grid; gap: 0 0.9rem; }
+
+    .field { margin-bottom: 0.85rem; }
+
+    label {
+      display: block;
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .opt { color: var(--muted); font-weight: 600; }
+
     input, select, textarea {
-      width: 100%; border: 1px solid var(--line); background: #0e1218; color: var(--text);
-      border-radius: 10px; padding: 12px 12px; font: inherit;
+      width: 100%;
+      border: 1px solid #445066;
+      background: #0e1218;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.75rem 0.8rem;
+      font: inherit;
+      font-size: 16px;
+      min-height: 48px;
     }
-    textarea { min-height: 96px; resize: vertical; }
-    button {
-      width: 100%; margin-top: 16px; border: 0; border-radius: 12px; padding: 14px 16px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #041018;
-      font-weight: 700; font-size: 1rem; cursor: pointer;
+
+    textarea { min-height: 128px; resize: vertical; }
+
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 1px;
+      border-color: var(--accent);
     }
-    button:hover { filter: brightness(1.05); }
-    .price {
-      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-      margin: 8px 0 4px; padding: 12px 14px; border-radius: 12px; background: rgba(61,214,198,.08);
-      border: 1px solid rgba(61,214,198,.25);
+
+    .payline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.35rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 12px;
+      background: rgba(228, 177, 92, 0.1);
+      border: 1px solid rgba(228, 177, 92, 0.45);
     }
-    .price b { font-size: 1.4rem; }
-    .fine { color: var(--muted); font-size: 12px; margin-top: 14px; }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
-    @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
-    .step { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: var(--card); }
-    .step .n { color: var(--accent); font-weight: 700; font-size: 13px; }
-    footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+
+    .payline span { color: var(--muted); font-weight: 700; }
+    .payline strong {
+      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      font-size: 2.4rem;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+
     #thanks { display: none; }
+
     #thanks:target { display: block; }
-    #thanks:target + #form-card { display: none; }
-    .thanks-box {
-      border: 1px solid rgba(61,214,198,.35); background: rgba(61,214,198,.08);
-      border-radius: 18px; padding: 28px; text-align: center;
+    #thanks:target + .form-shell { display: none; }
+
+    .thanks {
+      border: 1px solid rgba(228, 177, 92, 0.5);
+      background: #17140f;
+      border-radius: 18px;
+      padding: 1.3rem 1.15rem 1.4rem;
+    }
+
+    .thanks ol { margin: 0.8rem 0 0; padding-left: 1.2rem; }
+    .thanks li { margin: 0.55rem 0; }
+    .thanks p { color: var(--muted); }
+
+    .text-link { color: var(--accent); font-weight: 800; }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 1.5rem 0 2.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer p { margin: 0.3rem 0; }
+
+    @media (min-width: 720px) {
+      .split, .cards { grid-template-columns: 1fr 1fr; }
+      .fields.two { grid-template-columns: 1fr 1fr; }
+      .sample { padding: 1.4rem 1.5rem 1.5rem; }
+      .form-card { padding: 1.25rem 1.3rem 1.35rem; }
+    }
+
+    @media (min-width: 960px) {
+      .bar nav { display: flex; }
+      .bar .btn-small { margin-left: 0; }
+      .hero { padding: 2.6rem 0 3.4rem; }
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.72fr);
+        gap: 2.25rem;
+      }
+      .section { padding: 4.25rem 0; }
+      .steps, .why-grid { grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
+      .request-grid {
+        grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+        gap: 2rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <div class="badge">US early access · BRZ / GR86 · G37 / Q60</div>
-    <h1>Know what’s going on with your car before you pay the shop.</h1>
-    <p class="lead">Garumi is an automotive intelligence companion for enthusiasts. Get a clear read on symptoms, invoices, and parts fitment - starting with the cars we actually drive and wrench on.</p>
-    <div class="cars">
-      <span>Subaru BRZ</span>
-      <span>Toyota GR86</span>
-      <span>Infiniti G37</span>
-      <span>Infiniti Q60</span>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="bar">
+    <div class="wrap bar-inner">
+      <a class="brand" href="#top">GARUMI</a>
+      <nav aria-label="On this page">
+        <a href="#fit">Who it is for</a>
+        <a href="#get">What you get</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-small" href="#request">Pay $29 for my check</a>
     </div>
+  </header>
 
-    <div class="grid">
-      <section class="card">
-        <h2>What you get in the pilot</h2>
-        <ul class="list">
-          <li><strong>VIN profile</strong> Specs and a practical checklist for your exact car.</li>
-          <li><strong>Symptom check</strong> Plain-English likely causes and what to do next.</li>
-          <li><strong>Invoice sanity check</strong> Spot overpriced labor/parts before you approve.</li>
-          <li><strong>Parts fitment note</strong> Avoid the wrong aftermarket order for BRZ/GR86 or G37/Q60.</li>
-        </ul>
-        <div class="price"><span>One full check</span><b>$29</b></div>
-        <p class="fine">Early access price while we learn from real owners in these communities. Not a substitute for a licensed shop.</p>
-      </section>
-
-      <section>
-        <div id="thanks">
-          <div class="thanks-box">
-            <h2>Got it - you’re on the list.</h2>
-            <p class="lead" style="margin:0 auto;">Check your email for a confirmation from Formsubmit if this is your first submit. We’ll follow up on WhatsApp/email with next steps.</p>
-          </div>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Early access for US owners</p>
+          <h1><span class="pay">You pay $29</span> for a written check for BRZ/GR86 and G37/Q60 owners before you pay the shop.</h1>
+          <p class="lead">You get a VIN profile, symptom check, invoice sanity, and a parts fitment note, in a written reply within 24 hours. AI-assisted, founder-reviewed. Not a full app and not a licensed shop.</p>
+          <ul class="cars">
+            <li>Subaru BRZ</li>
+            <li>Toyota GR86</li>
+            <li>Infiniti G37</li>
+            <li>Infiniti Q60</li>
+          </ul>
         </div>
-        <div class="card" id="form-card">
-          <h2>Join the US pilot</h2>
-          <form action="https://formsubmit.co/guybelo@me.com" method="POST">
-            <input type="hidden" name="_subject" value="Garumi early access lead" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_next" value="https://garumi.com/#thanks" />
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-
-            <label for="name">Name</label>
-            <input id="name" name="name" required />
-
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required />
-
-            <label for="handle">Reddit / Discord handle (optional)</label>
-            <input id="handle" name="handle" placeholder="u/… or discord#…" />
-
-            <label for="car">Car</label>
-            <select id="car" name="car" required>
-              <option value="">Select…</option>
-              <option>Subaru BRZ</option>
-              <option>Toyota GR86</option>
-              <option>Infiniti G37</option>
-              <option>Infiniti Q60</option>
-              <option>Other</option>
-            </select>
-
-            <label for="year">Year</label>
-            <input id="year" name="year" placeholder="2014" />
-
-            <label for="vin">VIN (optional)</label>
-            <input id="vin" name="vin" />
-
-            <label for="need">What do you need now?</label>
-            <select id="need" name="need" required>
-              <option value="">Select…</option>
-              <option>Symptom diagnosis</option>
-              <option>Invoice check</option>
-              <option>Parts fitment</option>
-            </select>
-
-            <label for="problem">What’s going on?</label>
-            <textarea id="problem" name="problem" required placeholder="Noise on hard braking, shop quote attached later, etc."></textarea>
-
-            <button type="submit">Request my $29 check</button>
-            <p class="fine">Responses go to the founder inbox. We’ll only use your info for this pilot.</p>
-          </form>
-        </div>
-      </section>
-    </div>
-
-    <section class="steps">
-      <div class="step"><div class="n">01</div><strong>Tell us the car + problem</strong><div class="fine">BRZ/GR86 or G37/Q60 preferred for this pilot.</div></div>
-      <div class="step"><div class="n">02</div><strong>Get a clear write-up</strong><div class="fine">Likely causes, what to ask the shop, what not to buy yet.</div></div>
-      <div class="step"><div class="n">03</div><strong>Help shape Garumi</strong><div class="fine">Your feedback decides what we build next.</div></div>
+        <aside class="price-card" aria-label="You pay $29">
+          <p class="kicker">You pay</p>
+          <p class="amount">$29</p>
+          <p class="once">Once. One written check. No subscription.</p>
+          <p class="includes-label">Included in the check</p>
+          <ul class="includes">
+            <li>VIN profile</li>
+            <li>Symptom check</li>
+            <li>Invoice sanity</li>
+            <li>Parts fitment note</li>
+          </ul>
+          <a class="btn" href="#request" aria-describedby="hero-note">Pay $29 for my check</a>
+          <p class="micro" id="hero-note">Written reply within 24 hours by email or WhatsApp. One-time. No subscription.</p>
+        </aside>
+      </div>
     </section>
 
-    <footer>
-      Garumi · US early access · Built for enthusiast communities first.
-    </footer>
+    <section class="section" id="fit" aria-labelledby="fit-title">
+      <div class="wrap">
+        <p class="eyebrow">Fit</p>
+        <h2 id="fit-title">Who this is for</h2>
+        <div class="split">
+          <article class="card card-for">
+            <p class="tag">For you</p>
+            <h3>Owners with a real decision to make</h3>
+            <ul>
+              <li>You own a Subaru BRZ, Toyota GR86, Infiniti G37, or Infiniti Q60.</li>
+              <li>You are in a US owner community and you have a symptom, a shop quote, or a parts question.</li>
+              <li>You want that answer in writing before you approve work or order parts.</li>
+            </ul>
+          </article>
+          <article class="card card-not">
+            <p class="tag">Not for this pilot</p>
+            <h3>Outside the check we can write</h3>
+            <ul>
+              <li>You need a licensed shop to inspect, repair, or sign off on the car.</li>
+              <li>You want a full app, a login, live data, or a monthly subscription.</li>
+              <li>Your car is outside these four models. If we cannot write a useful check, you get a refund.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="get" aria-labelledby="get-title">
+      <div class="wrap">
+        <p class="eyebrow">Deliverable</p>
+        <h2 id="get-title">What you get</h2>
+        <p class="intro">One written reply for the car and the problem you send. You pay $29 once. AI-assisted, founder-reviewed.</p>
+        <div class="cards">
+          <article class="card">
+            <h3>VIN profile</h3>
+            <p>A practical read on the car that VIN points to, plus a short checklist for that model year. VIN is optional.</p>
+          </article>
+          <article class="card">
+            <h3>Symptom check</h3>
+            <p>Plain-English likely causes, what is less likely, and what to ask the shop to measure before you approve work.</p>
+          </article>
+          <article class="card">
+            <h3>Invoice sanity</h3>
+            <p>A pass over labor and parts on a quote, so you can question a bundle before you pay the shop.</p>
+          </article>
+          <article class="card">
+            <h3>Parts fitment note</h3>
+            <p>A note on whether a part is likely right for your BRZ, GR86, G37, or Q60 before you order it.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sample" aria-labelledby="sample-title">
+      <div class="wrap">
+        <p class="eyebrow">Sample output</p>
+        <h2 id="sample-title">What the written check looks like</h2>
+        <p class="intro">Example only. Not a real customer, not a real VIN, and not your car.</p>
+        <article class="sample" aria-label="Example written check">
+          <div class="sample-top">
+            <h3>Example check: front brake noise</h3>
+            <span class="example-badge">Example</span>
+          </div>
+          <dl class="meta">
+            <dt>Car</dt>
+            <dd>2017 Subaru BRZ</dd>
+            <dt>VIN</dt>
+            <dd><span class="redacted">REDACTED</span></dd>
+            <dt>Need</dt>
+            <dd>Symptom check</dd>
+            <dt>Problem</dt>
+            <dd>Squeal from the front on light stops. Louder after the car sits overnight. No pull to one side.</dd>
+          </dl>
+
+          <h4>VIN profile</h4>
+          <p>Example shape only: 2017 Subaru BRZ, VIN redacted. A real check confirms the model year from the VIN you choose to share and adds a short checklist for that car. This sample does not decode a real VIN.</p>
+
+          <h4>Symptom check</h4>
+          <p>Likely: glazed front pads or a wear indicator. Cold squeal that eases after a few stops is common. That pattern alone does not mean a caliper has failed.</p>
+          <p>Less likely until measured: rotors under minimum thickness. A lip or a groove needs a number.</p>
+          <p>Not supported by this note: a wheel bearing. Bearing noise usually follows road speed. It does not start and stop with the pedal.</p>
+
+          <h4>Invoice sanity</h4>
+          <ul>
+            <li>A pad job is the sane first quote when pads are thin and rotors are still in spec.</li>
+            <li>Question a quote that bundles pads, rotors, and calipers for an overnight squeal with no measurements written down.</li>
+          </ul>
+
+          <h4>Parts fitment note</h4>
+          <p>Match front pads to a 2017 Subaru BRZ. A pad listed only for a later Toyota GR86 is not automatically the same part. Do not buy drilled rotors to cure a squeal before someone measures thickness.</p>
+
+          <p class="note">Example only. Your check is written for your year, your symptoms, and any invoice you share. AI-assisted, founder-reviewed. Not a licensed shop.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <p class="eyebrow">Process</p>
+        <h2 id="how-title">How it works</h2>
+        <ol class="steps">
+          <li class="card step">
+            <span class="num">01</span>
+            <span class="time">About 3 minutes</span>
+            <h3>Send the car and the problem</h3>
+            <p>Car, year, what you need, and what is going on. VIN is optional. You pay $29 once for the check.</p>
+          </li>
+          <li class="card step">
+            <span class="num">02</span>
+            <span class="time">Within 24 hours</span>
+            <h3>Get the written check</h3>
+            <p>A written reply by email or WhatsApp. We may ask 1 or 2 short follow-up questions if a detail is missing.</p>
+          </li>
+          <li class="card step">
+            <span class="num">03</span>
+            <span class="time">About 10 minutes to read</span>
+            <h3>Use it before you pay the shop</h3>
+            <p>Question a quote, skip a part, or walk in with better notes. One-time. No subscription.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="why" aria-labelledby="why-title">
+      <div class="wrap">
+        <p class="eyebrow">Why it costs money</p>
+        <h2 id="why-title">Why early access is paid</h2>
+        <p class="intro">The check is the product right now. Garumi is not a full app yet.</p>
+        <div class="why-grid">
+          <article class="card">
+            <h3>You pay $29</h3>
+            <p>That is the price of the written check. It is not money you receive, and it is not store credit.</p>
+          </article>
+          <article class="card">
+            <h3>A person reviews it</h3>
+            <p>The fee pays for a founder to review an AI-assisted draft. It is not a free chatbot reply.</p>
+          </article>
+          <article class="card">
+            <h3>Refund if we cannot deliver</h3>
+            <p>If we cannot deliver a useful written check within 24 hours, you get a refund.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trust" aria-labelledby="trust-title">
+      <div class="wrap">
+        <div class="trust">
+          <p class="eyebrow">Trust</p>
+          <h2 id="trust-title">Reviewed by the founder</h2>
+          <p>Every check is AI-assisted and founder-reviewed before it is sent. Garumi is early access for US communities around the Subaru BRZ, Toyota GR86, Infiniti G37, and Infiniti Q60. We do not replace a licensed shop, and this page is not a promise to repair the car.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title">Questions before you pay</h2>
+        <div class="faq">
+          <details open>
+            <summary><span>Is $29 what I receive?</span></summary>
+            <p>No. $29 is what you pay, once, for the written check. You do not receive $29.</p>
+          </details>
+          <details>
+            <summary><span>What if you cannot deliver a useful check?</span></summary>
+            <p>You get a refund if we cannot deliver a useful written check within 24 hours.</p>
+          </details>
+          <details>
+            <summary><span>Who sees my VIN?</span></summary>
+            <p>VIN is optional. If you include it, we use it only to match your car for this check. We do not publish it, and we do not sell your information.</p>
+          </details>
+          <details>
+            <summary><span>Are you a licensed mechanic?</span></summary>
+            <p>No. Garumi is not a licensed shop and not a substitute for one. The check is a written second look before you approve work or order parts. We do not repair the car.</p>
+          </details>
+          <details>
+            <summary><span>What happens after I submit?</span></summary>
+            <p>We get your request. Expect a confirmation email. Then a written check within 24 hours by email or WhatsApp. We may ask 1 or 2 short follow-up questions if a detail is missing.</p>
+          </details>
+          <details>
+            <summary><span>Is this a subscription or a full app?</span></summary>
+            <p>No. You pay $29 once. No subscription. This is not a full app yet.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="request" aria-labelledby="request-title">
+      <div class="wrap">
+        <div id="thanks" class="thanks">
+          <p class="eyebrow">Request received</p>
+          <h2>We got your request.</h2>
+          <p>Here is what happens next.</p>
+          <ol>
+            <li>Expect a confirmation email. Check spam if you do not see it soon.</li>
+            <li>Your written check arrives within 24 hours by email or WhatsApp.</li>
+            <li>We may ask 1 or 2 short follow-up questions if a detail is missing.</li>
+          </ol>
+          <p>You pay $29 once. No subscription. If we cannot deliver a useful written check within 24 hours, you get a refund.</p>
+          <p><a class="text-link" href="./">Back to Garumi</a></p>
+        </div>
+        <div class="form-shell">
+          <div class="request-grid">
+            <div class="side">
+              <p class="eyebrow">Request</p>
+              <h2 id="request-title">Request your check</h2>
+              <p class="intro">Tell us the car and the problem. You pay $29 once. We send a written reply within 24 hours.</p>
+              <p class="kicker">You pay</p>
+              <p class="lockup">$29</p>
+              <p class="once">Once. No subscription.</p>
+              <ul>
+                <li>VIN profile</li>
+                <li>Symptom check</li>
+                <li>Invoice sanity</li>
+                <li>Parts fitment note</li>
+              </ul>
+            </div>
+            <form class="form-card" action="https://formsubmit.co/guybelo@me.com" method="POST" aria-labelledby="request-title">
+              <input type="hidden" name="_subject" value="Garumi written check request - you pay $29" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_next" value="https://garumi.com/#thanks" />
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+              <div class="fields two">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" autocomplete="name" required />
+                </div>
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
+                <div class="field">
+                  <label for="car">Car</label>
+                  <select id="car" name="car" required>
+                    <option value="">Select one</option>
+                    <option>Subaru BRZ</option>
+                    <option>Toyota GR86</option>
+                    <option>Infiniti G37</option>
+                    <option>Infiniti Q60</option>
+                    <option>Other car (outside this pilot)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="year">Year</label>
+                  <input id="year" name="year" inputmode="numeric" autocomplete="off" placeholder="2017" pattern="[0-9]{4}" title="Use a 4-digit year, for example 2017" required />
+                </div>
+                <div class="field">
+                  <label for="handle">Reddit or Discord handle <span class="opt">(optional)</span></label>
+                  <input id="handle" name="handle" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label for="vin">VIN <span class="opt">(optional)</span></label>
+                  <input id="vin" name="vin" maxlength="17" autocapitalize="characters" spellcheck="false" autocomplete="off" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="need">What do you need now?</label>
+                <select id="need" name="need" required>
+                  <option value="">Select one</option>
+                  <option>Symptom check</option>
+                  <option>Invoice sanity</option>
+                  <option>Parts fitment note</option>
+                  <option>VIN profile</option>
+                  <option>More than one of these</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="problem">What is going on?</label>
+                <textarea id="problem" name="problem" required placeholder="Squeal from the front brakes after the car sits overnight, or a shop quote you want read before you approve it."></textarea>
+              </div>
+
+              <div class="payline">
+                <span>You pay</span>
+                <strong>$29</strong>
+                <span>once</span>
+              </div>
+              <button type="submit" aria-describedby="pay-note">Pay $29 for my check</button>
+              <p class="micro" id="pay-note">Written reply within 24 hours by email or WhatsApp. One-time. No subscription. Refund if we cannot deliver a useful written check within 24 hours.</p>
+              <p class="micro">Your note goes to the founder and is used only to write this check.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>Garumi. Early access written checks for US Subaru BRZ, Toyota GR86, Infiniti G37, and Infiniti Q60 owners.</p>
+      <p>You pay $29 once. AI-assisted, founder-reviewed. Not a licensed shop.</p>
+    </div>
+  </footer>
 </body>
 </html>
