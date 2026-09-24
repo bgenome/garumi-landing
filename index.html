@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0c0d10" />
   <title>Garumi | You pay $29 for a written car check</title>
   <meta name="description" content="You pay $29 once for a founder-reviewed written check for Subaru BRZ, Toyota GR86, Infiniti G37, and Infiniti Q60 owners. VIN profile, symptom check, invoice sanity, and parts fitment. Written reply within 24 hours." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23e4b15c'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%231c1408'%3EG%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -145,7 +146,7 @@
       white-space: nowrap;
     }
 
-    .hero { padding: 1.75rem 0 2.5rem; }
+    .hero { padding: 1.15rem 0 2.5rem; }
 
     .hero-grid {
       display: grid;
@@ -178,18 +179,18 @@
     }
 
     .lead {
-      margin: 0.9rem 0 0;
+      margin: 0.7rem 0 0;
       color: var(--muted);
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       max-width: 42rem;
     }
 
     .cars {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.45rem;
       list-style: none;
-      margin: 1.1rem 0 0;
+      margin: 0.85rem 0 0;
       padding: 0;
     }
 
@@ -248,7 +249,8 @@
       margin: 0 0 1rem;
       padding: 0;
       display: grid;
-      gap: 0.4rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem 0.75rem;
     }
 
     .includes li {
@@ -533,6 +535,7 @@
       border: 1px solid rgba(228, 177, 92, 0.45);
     }
 
+    .payline p { margin: 0; display: flex; align-items: baseline; gap: 0.6rem; }
     .payline span { color: var(--muted); font-weight: 700; }
     .payline strong {
       font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
@@ -569,6 +572,13 @@
 
     .footer p { margin: 0.3rem 0; }
 
+    @media (max-width: 959px) {
+      .side .kicker,
+      .side .lockup,
+      .side .once,
+      .side ul { display: none; }
+    }
+
     @media (min-width: 720px) {
       .split, .cards { grid-template-columns: 1fr 1fr; }
       .fields.two { grid-template-columns: 1fr 1fr; }
@@ -580,6 +590,7 @@
       .bar nav { display: flex; }
       .bar .btn-small { margin-left: 0; }
       .hero { padding: 2.6rem 0 3.4rem; }
+      .includes { grid-template-columns: 1fr; }
       .hero-grid {
         grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.72fr);
         gap: 2.25rem;
@@ -618,7 +629,7 @@
         <div>
           <p class="eyebrow">Early access for US owners</p>
           <h1><span class="pay">You pay $29</span> for a written check for BRZ/GR86 and G37/Q60 owners before you pay the shop.</h1>
-          <p class="lead">You get a VIN profile, symptom check, invoice sanity, and a parts fitment note, in a written reply within 24 hours. AI-assisted, founder-reviewed. Not a full app and not a licensed shop.</p>
+          <p class="lead">VIN profile, symptom check, invoice sanity, and a parts fitment note. AI-assisted, founder-reviewed. Not a full app and not a licensed shop.</p>
           <ul class="cars">
             <li>Subaru BRZ</li>
             <li>Toyota GR86</li>
@@ -920,9 +931,8 @@
               </div>
 
               <div class="payline">
-                <span>You pay</span>
-                <strong>$29</strong>
-                <span>once</span>
+                <p class="payline-main"><span>You pay</span> <strong>$29</strong></p>
+                <span class="payline-once">once</span>
               </div>
               <button type="submit" aria-describedby="pay-note">Pay $29 for my check</button>
               <p class="micro" id="pay-note">Written reply within 24 hours by email or WhatsApp. One-time. No subscription. Refund if we cannot deliver a useful written check within 24 hours.</p>
