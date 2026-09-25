@@ -1,6 +1,11 @@
 # Garumi landing
 
-Static page. Live today: your car reports, GPS off by default, every claim labeled verified or inferred. Early access list for an always-on LTE dongle, first for US BRZ, GR86, G37, and Q60 owners. Join the list only.
+Minimal waitlist page.
+
+Know your car - from the car, not from a chat.
+
+Built first for BRZ, GR86, G37, and Q60 owners in the US.
+We're finishing the always-on path. Nothing to buy yet.
 
 - **Interim URL (after Pages):** https://bgenome.github.io/garumi-landing/
 - **Custom domain:** https://garumi.com

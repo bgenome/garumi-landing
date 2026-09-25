@@ -4,656 +4,199 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0d10" />
-  <title>Garumi | Your car reports. We don't guess from symptoms.</title>
-  <meta name="description" content="Your car reports. We don't guess from symptoms. GPS off by default. Every claim labeled verified or inferred. Early access: an always-on LTE dongle for BRZ, GR86, G37, and Q60 owners in the US. Join early access." />
+  <title>Garumi | Know your car - from the car, not from a chat.</title>
+  <meta name="description" content="Know your car - from the car, not from a chat. Built first for BRZ, GR86, G37, and Q60 owners in the US. Nothing to buy yet." />
   <link rel="canonical" href="https://garumi.com/" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23e4b15c'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%231c1408'%3EG%3C/text%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0c0d10;
-      --card: #161a21;
-      --card-2: #1c212b;
-      --line: #313846;
       --text: #f4f6f8;
-      --muted: #c5ccd6;
+      --muted: #b7c0cc;
+      --line: #343b48;
+      --field: #12141a;
       --accent: #e4b15c;
-      --accent-2: #f2cb7a;
+      --accent-hover: #f0c57a;
       --ink: #1c1408;
-      --shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
     }
 
     * { box-sizing: border-box; }
 
-    html {
-      color-scheme: dark;
-      scroll-behavior: smooth;
-      scroll-padding-top: 76px;
-    }
+    html { color-scheme: dark; }
 
     body {
       margin: 0;
-      font-family: Barlow, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      background:
-        radial-gradient(880px 420px at 100% -10%, rgba(228, 177, 92, 0.16), transparent 58%),
-        var(--bg);
+      min-height: 100dvh;
+      font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.55;
-      font-size: 1.05rem;
+      line-height: 1.5;
+      font-size: 1.0625rem;
     }
 
-    .skip {
-      position: absolute;
-      left: 12px;
-      top: -48px;
-      z-index: 50;
-      background: var(--accent);
-      color: var(--ink);
-      font-weight: 800;
-      padding: 0.55rem 0.8rem;
-      border-radius: 8px;
-      text-decoration: none;
-    }
-
-    .skip:focus { top: 12px; }
-
-    .wrap {
-      width: min(1080px, calc(100% - 2rem));
-      margin-inline: auto;
-    }
-
-    .bar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(12, 13, 16, 0.92);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(16px);
-    }
-
-    .bar-inner {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      min-height: 64px;
+    main {
+      width: min(26.5rem, calc(100% - 2.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+      margin: 0 auto;
+      padding: max(2.75rem, env(safe-area-inset-top)) 0 max(3rem, env(safe-area-inset-bottom));
     }
 
     .brand {
-      flex: none;
-      color: var(--text);
-      text-decoration: none;
-      font-family: "Barlow Condensed", Barlow, "Arial Narrow", sans-serif;
+      margin: 0 0 1.15rem;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
-      font-size: 1.35rem;
+      letter-spacing: 0.04em;
     }
-
-    .bar nav {
-      display: none;
-      gap: 1.1rem;
-      margin-left: auto;
-    }
-
-    .bar nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.98rem;
-    }
-
-    .bar nav a:hover { color: var(--text); text-decoration: underline; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 52px;
-      padding: 0.85rem 1.1rem;
-      border: 0;
-      border-radius: 12px;
-      background: var(--accent);
-      color: var(--ink);
-      font: inherit;
-      font-weight: 800;
-      font-size: 1.05rem;
-      line-height: 1.2;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .btn:visited { color: var(--ink); }
-    .btn:hover { background: var(--accent-2); }
-
-    .btn:focus-visible,
-    .brand:focus-visible,
-    .bar nav a:focus-visible,
-    summary:focus-visible,
-    .text-link:focus-visible {
-      outline: 3px solid var(--accent-2);
-      outline-offset: 3px;
-    }
-
-    .btn-small {
-      width: auto;
-      flex: none;
-      margin-left: auto;
-      min-height: 42px;
-      padding: 0.5rem 0.8rem;
-      font-size: 0.92rem;
-      white-space: nowrap;
-    }
-
-    .hero { padding: 1.25rem 0 2.4rem; }
-
-    .hero-grid {
-      display: grid;
-      gap: 1.15rem;
-      align-items: start;
-    }
-
-    .eyebrow,
-    .tag {
-      margin: 0 0 0.55rem;
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    h1, h2, h3, p { text-wrap: balance; }
 
     h1 {
-      margin: 0;
-      font-size: clamp(2rem, 8vw, 3.35rem);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      font-weight: 800;
-    }
-
-    h1 span {
-      display: block;
-      margin-top: 0.4rem;
-    }
-
-    .live-points {
-      list-style: none;
-      margin: 1rem 0 0;
-      padding: 0;
-      display: grid;
-      gap: 0.55rem;
-    }
-
-    .live-points li {
-      margin: 0;
-      padding: 0.75rem 0.85rem;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-left: 3px solid var(--accent);
-      border-radius: 12px;
-      font-weight: 700;
-    }
-
-    .early-card {
-      background: linear-gradient(180deg, #231c14 0%, #141820 46%);
-      border: 1px solid rgba(228, 177, 92, 0.5);
-      border-radius: 18px;
-      padding: 1.1rem 1.1rem 1.15rem;
-      box-shadow: var(--shadow);
-    }
-
-    .early-card h2 {
-      margin: 0 0 0.35rem;
-      font-size: 1.55rem;
-    }
-
-    .early-card p { margin: 0.35rem 0; }
-
-    .not-yet {
-      margin: 0 0 0.7rem;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .cars {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      list-style: none;
-      margin: 0.7rem 0 0.95rem;
-      padding: 0;
-    }
-
-    .cars li {
-      border: 1px solid var(--line);
-      background: rgba(12, 13, 16, 0.45);
-      border-radius: 999px;
-      padding: 0.38rem 0.7rem;
-      font-size: 0.92rem;
-      font-weight: 700;
-    }
-
-    .micro {
-      margin: 0.75rem 0 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .section { padding: 2.75rem 0; border-top: 1px solid var(--line); }
-
-    h2 {
-      margin: 0 0 0.7rem;
-      font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+      margin: 0 0 1rem;
+      font-size: clamp(1.75rem, 7vw, 2.25rem);
       line-height: 1.15;
-      letter-spacing: -0.025em;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
-    h3 { margin: 0 0 0.35rem; font-size: 1.15rem; line-height: 1.3; }
-
-    .intro {
-      margin: 0 0 1.1rem;
-      color: var(--muted);
-      max-width: 42rem;
-    }
-
-    .cards, .faq { display: grid; gap: 0.75rem; }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 1.05rem 1.05rem 1.1rem;
-    }
-
-    .card p, .faq p, .thanks p { margin: 0; color: var(--muted); }
-
-    .card ul {
-      margin: 0.75rem 0 0;
-      padding-left: 1.15rem;
+    .note {
+      margin: 0 0 0.55rem;
       color: var(--muted);
     }
 
-    .card li { margin: 0.45rem 0; }
+    .note:last-of-type { margin-bottom: 1.75rem; }
 
-    .labels {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      list-style: none;
-      margin: 0.8rem 0 0;
-      padding: 0;
-    }
-
-    .labels li {
-      margin: 0;
-      border-radius: 999px;
-      padding: 0.32rem 0.65rem;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .verified {
-      background: var(--accent);
-      color: var(--ink);
-    }
-
-    .inferred {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--line);
-    }
-
-    .tag-quiet { color: var(--muted); }
-
-    details {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 0.3rem 0.95rem 0.15rem;
-    }
-
-    summary {
-      cursor: pointer;
-      font-weight: 700;
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
-      list-style: none;
-    }
-
-    summary::-webkit-details-marker { display: none; }
-    summary span { flex: 1; }
-
-    summary::after {
-      content: "+";
-      color: var(--accent);
-      font-size: 1.45rem;
-      font-weight: 700;
-      line-height: 1;
-      flex: none;
-    }
-
-    details[open] summary::after { content: "-"; }
-
-    details p {
-      margin: 0 0 0.9rem;
-      max-width: 44rem;
-    }
-
-    .request-grid { display: grid; gap: 1.15rem; align-items: start; }
-
-    .form-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 1rem 1rem 1.15rem;
-    }
-
-    .fields { display: grid; gap: 0; }
-
-    .field { margin-bottom: 0.85rem; }
+    .field { margin: 0 0 0.85rem; }
 
     label {
       display: block;
       margin: 0 0 0.35rem;
       font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: 600;
     }
 
-    .opt { color: var(--muted); font-weight: 600; }
+    .opt {
+      color: var(--muted);
+      font-weight: 500;
+    }
 
-    input, select, textarea {
+    input {
       width: 100%;
-      border: 1px solid #445066;
-      background: #0e1218;
-      color: var(--text);
+      min-height: 48px;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid var(--line);
       border-radius: 10px;
-      padding: 0.75rem 0.8rem;
+      background: var(--field);
+      color: var(--text);
       font: inherit;
       font-size: 16px;
-      min-height: 48px;
     }
 
-    textarea { min-height: 120px; resize: vertical; }
-
     input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
+    button:focus-visible,
+    a:focus-visible {
       outline: 3px solid var(--accent);
-      outline-offset: 1px;
-      border-color: var(--accent);
+      outline-offset: 2px;
+    }
+
+    button {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 0.25rem;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--accent-hover); }
+
+    .support {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hp {
+      display: none;
     }
 
     #thanks { display: none; }
 
     #thanks:target { display: block; }
-    #thanks:target + .form-shell { display: none; }
 
-    .thanks {
-      border: 1px solid rgba(228, 177, 92, 0.5);
-      background: #17140f;
-      border-radius: 18px;
-      padding: 1.25rem 1.1rem 1.35rem;
+    #thanks:target ~ form { display: none; }
+
+    .thanks h2 {
+      margin: 0 0 0.45rem;
+      font-size: 1.45rem;
+      line-height: 1.2;
+      font-weight: 700;
     }
 
-    .thanks p + p { margin-top: 0.75rem; }
-
-    .text-link { color: var(--accent); font-weight: 800; }
-
-    .footer {
-      border-top: 1px solid var(--line);
-      padding: 1.4rem 0 2.1rem;
+    .thanks p {
+      margin: 0 0 0.9rem;
       color: var(--muted);
-      font-size: 0.95rem;
     }
 
-    .footer p { margin: 0.35rem 0; }
+    .thanks a {
+      color: var(--accent);
+      font-weight: 700;
+    }
 
     @media (min-width: 720px) {
-      .fields.two { grid-template-columns: 1fr 1fr; gap: 0 0.9rem; }
-      .cards.three { grid-template-columns: 1fr 1fr; }
-      .form-card { padding: 1.2rem 1.25rem 1.3rem; }
-      .early-card { padding: 1.25rem 1.3rem 1.3rem; }
-    }
-
-    @media (min-width: 960px) {
-      .bar nav { display: flex; }
-      .bar .btn-small { margin-left: 0; }
-      .hero { padding: 2.5rem 0 3.2rem; }
-      .hero-grid {
-        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.78fr);
-        gap: 2rem;
-        align-items: stretch;
+      body {
+        display: grid;
+        align-items: center;
       }
-      .section { padding: 4rem 0; }
-      .cards.three { grid-template-columns: repeat(3, 1fr); }
-      .request-grid {
-        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-        gap: 2rem;
-      }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+      main { padding-top: 3rem; padding-bottom: 3rem; }
     }
   </style>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
-  <header class="bar">
-    <div class="wrap bar-inner">
-      <a class="brand" href="#top">GARUMI</a>
-      <nav aria-label="On this page">
-        <a href="#live">Live today</a>
-        <a href="#early">Early access</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <a class="btn btn-small" href="#request">Join early access</a>
+  <main>
+    <p class="brand">Garumi</p>
+    <h1>Know your car - from the car, not from a chat.</h1>
+    <p class="note">Built first for BRZ, GR86, G37, and Q60 owners in the US.</p>
+    <p class="note">We're finishing the always-on path. Nothing to buy yet.</p>
+
+    <div id="thanks" class="thanks" tabindex="-1">
+      <h2>You're on the list.</h2>
+      <p>We'll email you when it's ready for a real drive.</p>
+      <p><a href="./">Back to Garumi</a></p>
     </div>
-  </header>
 
-  <main id="main">
-    <section class="hero" id="top">
-      <div class="wrap hero-grid">
-        <div>
-          <p class="eyebrow">Live today</p>
-          <h1>Your car reports. <span>We don't guess from symptoms.</span></h1>
-          <ul class="live-points">
-            <li>GPS off by default.</li>
-            <li>Every claim labeled verified or inferred.</li>
-          </ul>
-        </div>
-        <aside class="early-card" aria-labelledby="hero-early-title">
-          <p class="tag">Early access</p>
-          <h2 id="hero-early-title">Always-on LTE dongle</h2>
-          <p class="not-yet">Not shipping to customers yet.</p>
-          <p>Your phone only shows alerts and status.</p>
-          <p class="micro">Built first for these owners in the US.</p>
-          <ul class="cars">
-            <li>BRZ</li>
-            <li>GR86</li>
-            <li>G37</li>
-            <li>Q60</li>
-          </ul>
-          <a class="btn" href="#request">Join early access</a>
-          <p class="micro">For BRZ, GR86, G37 &amp; Q60 owners in the US - get notified when the always-on dongle opens.</p>
-        </aside>
+    <form action="https://formsubmit.co/guybelo@me.com" method="POST" aria-label="Get notified">
+      <input type="hidden" name="_subject" value="Garumi waitlist" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_next" value="https://garumi.com/#thanks" />
+      <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
       </div>
-    </section>
-
-    <section class="section" id="live" aria-labelledby="live-title">
-      <div class="wrap">
-        <p class="eyebrow">Live today</p>
-        <h2 id="live-title">What is live today</h2>
-        <div class="cards three">
-          <article class="card">
-            <h3>Your car reports.</h3>
-            <p>We don't guess from symptoms.</p>
-          </article>
-          <article class="card">
-            <h3>GPS off by default.</h3>
-          </article>
-          <article class="card">
-            <h3>Every claim labeled verified or inferred.</h3>
-            <ul class="labels">
-              <li class="verified">Verified</li>
-              <li class="inferred">Inferred</li>
-            </ul>
-          </article>
-        </div>
+      <div class="field">
+        <label for="name">Name <span class="opt">(optional)</span></label>
+        <input id="name" name="name" autocomplete="name" />
       </div>
-    </section>
-
-    <section class="section" id="early" aria-labelledby="early-title">
-      <div class="wrap">
-        <p class="tag">Early access</p>
-        <h2 id="early-title">Where the dongle is headed</h2>
-        <p class="intro">The always-on LTE dongle is the early access destination. It is not shipping to customers yet. Customers do not have the dongle.</p>
-        <div class="cards">
-          <article class="card">
-            <p class="tag">Early access</p>
-            <h3>Always-on LTE dongle</h3>
-            <p>Your phone only shows alerts and status.</p>
-          </article>
-          <article class="card">
-            <p class="tag">Early access</p>
-            <h3>Built first for US owners</h3>
-            <p>Built first for BRZ, GR86, G37, and Q60 owners in the US.</p>
-            <ul class="cars">
-              <li>Subaru BRZ</li>
-              <li>Toyota GR86</li>
-              <li>Infiniti G37</li>
-              <li>Infiniti Q60</li>
-            </ul>
-          </article>
-          <article class="card">
-            <p class="tag">Early access</p>
-            <h3>Privacy when the dongle ships</h3>
-            <ul>
-              <li>Vehicle telemetry goes to Garumi servers by default so your car picture stays current.</li>
-              <li>GPS stays off unless you turn it on.</li>
-              <li>Offline, the dongle buffers and syncs when back.</li>
-            </ul>
-          </article>
-        </div>
+      <div class="field">
+        <label for="car">Car <span class="opt">(optional)</span></label>
+        <input id="car" name="car" autocomplete="off" />
       </div>
-    </section>
 
-    <section class="section" id="faq" aria-labelledby="faq-title">
-      <div class="wrap">
-        <p class="eyebrow">FAQ</p>
-        <h2 id="faq-title">Live today and early access</h2>
-        <div class="faq">
-          <details open>
-            <summary><span>What is live today?</span></summary>
-            <p>Your car reports. We don't guess from symptoms. GPS off by default. Every claim labeled verified or inferred.</p>
-          </details>
-          <details>
-            <summary><span>Do customers have the always-on LTE dongle?</span></summary>
-            <p>No. The always-on LTE dongle is early access. It is not shipping to customers yet. Customers do not have the dongle.</p>
-          </details>
-          <details>
-            <summary><span>What does the phone show?</span></summary>
-            <p>When the always-on LTE dongle ships, your phone only shows alerts and status. That dongle is early access and is not shipping to customers yet.</p>
-          </details>
-          <details>
-            <summary><span>Who is this built for first?</span></summary>
-            <p>Built first for BRZ, GR86, G37, and Q60 owners in the US. That is early access, not a dongle customers already have.</p>
-          </details>
-          <details>
-            <summary><span>What is private when the dongle ships?</span></summary>
-            <p>Vehicle telemetry goes to Garumi servers by default so your car picture stays current. GPS stays off unless you turn it on. Offline, the dongle buffers and syncs when back.</p>
-          </details>
-          <details>
-            <summary><span>What do I join?</span></summary>
-            <p>Join early access. Join the list only. The always-on LTE dongle is not shipping to customers yet.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="request" aria-labelledby="request-title">
-      <div class="wrap">
-        <div id="thanks" class="thanks">
-          <p class="tag">Early access</p>
-          <h2>You're on the list.</h2>
-          <p>Join the list only. The always-on LTE dongle is not shipping to customers yet. Customers do not have the dongle.</p>
-          <p><a class="text-link" href="./">Back to Garumi</a></p>
-        </div>
-        <div class="form-shell">
-          <div class="request-grid">
-            <div>
-              <p class="tag">Early access</p>
-              <h2 id="request-title">Join early access</h2>
-              <p class="intro">Join early access. Join the list only. The always-on LTE dongle is the destination, and it is not shipping to customers yet.</p>
-              <ul class="cars">
-                <li>BRZ</li>
-                <li>GR86</li>
-                <li>G37</li>
-                <li>Q60</li>
-                <li>Other</li>
-              </ul>
-            </div>
-            <form class="form-card" action="https://formsubmit.co/guybelo@me.com" method="POST" aria-labelledby="request-title">
-              <input type="hidden" name="_subject" value="Garumi early access list" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_next" value="https://garumi.com/#thanks" />
-              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-
-              <div class="fields two">
-                <div class="field">
-                  <label for="name">Name</label>
-                  <input id="name" name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label for="email">Email</label>
-                  <input id="email" name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label for="car">Car</label>
-                  <select id="car" name="car" required>
-                    <option value="">Select one</option>
-                    <option>Subaru BRZ</option>
-                    <option>Toyota GR86</option>
-                    <option>Infiniti G37</option>
-                    <option>Infiniti Q60</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="year">Year <span class="opt">(optional)</span></label>
-                  <input id="year" name="year" inputmode="numeric" autocomplete="off" placeholder="2017" pattern="[0-9]{4}" title="Use a 4-digit year, for example 2017" />
-                </div>
-              </div>
-
-              <div class="field">
-                <label for="what_you_want">What you want <span class="opt">(optional)</span></label>
-                <textarea id="what_you_want" name="what_you_want" placeholder="Optional."></textarea>
-              </div>
-
-              <button class="btn" type="submit">Join early access</button>
-              <p class="micro">For BRZ, GR86, G37 &amp; Q60 owners in the US - get notified when the always-on dongle opens.</p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+      <button type="submit">Get notified</button>
+      <p class="support">when it's ready for a real drive.</p>
+    </form>
   </main>
-
-  <footer class="footer">
-    <div class="wrap">
-      <p>Garumi. Live today: your car reports. We don't guess from symptoms. GPS off by default. Every claim labeled verified or inferred.</p>
-      <p>Early access: always-on LTE dongle, built first for BRZ, GR86, G37, and Q60 owners in the US. Not shipping to customers yet. Join the list only.</p>
-    </div>
-  </footer>
+  <script>
+    (function () {
+      if (location.hash !== "#thanks") return;
+      var thanks = document.getElementById("thanks");
+      if (thanks) thanks.focus();
+    })();
+  </script>
 </body>
 </html>
