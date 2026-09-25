@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0d10" />
-  <title>Garumi | Know your car - from the car, not from a chat.</title>
-  <meta name="description" content="Know your car - from the car, not from a chat. Built first for BRZ, GR86, G37, and Q60 owners in the US. Nothing to buy yet." />
+  <title>Garumi | Your car reports. We don't guess from symptoms.</title>
+  <meta name="description" content="Your car reports. We don't guess from symptoms. For BRZ, GR86, G37, and Q60 owners in the US." />
   <link rel="canonical" href="https://garumi.com/" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23e4b15c'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%231c1408'%3EG%3C/text%3E%3C/svg%3E" />
   <style>
@@ -56,11 +56,9 @@
     }
 
     .note {
-      margin: 0 0 0.55rem;
+      margin: 0 0 1.75rem;
       color: var(--muted);
     }
-
-    .note:last-of-type { margin-bottom: 1.75rem; }
 
     .field { margin: 0 0 0.85rem; }
 
@@ -111,15 +109,7 @@
 
     button:hover { background: var(--accent-hover); }
 
-    .support {
-      margin: 0.75rem 0 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .hp {
-      display: none;
-    }
+    .hp { display: none; }
 
     #thanks { display: none; }
 
@@ -127,16 +117,13 @@
 
     #thanks:target ~ form { display: none; }
 
+    #thanks:focus { outline: none; }
+
     .thanks h2 {
-      margin: 0 0 0.45rem;
+      margin: 0 0 0.9rem;
       font-size: 1.45rem;
       line-height: 1.2;
       font-weight: 700;
-    }
-
-    .thanks p {
-      margin: 0 0 0.9rem;
-      color: var(--muted);
     }
 
     .thanks a {
@@ -157,18 +144,16 @@
 <body>
   <main>
     <p class="brand">Garumi</p>
-    <h1>Know your car - from the car, not from a chat.</h1>
-    <p class="note">Built first for BRZ, GR86, G37, and Q60 owners in the US.</p>
-    <p class="note">We're finishing the always-on path. Nothing to buy yet.</p>
+    <h1>Your car reports. We don't guess from symptoms.</h1>
+    <p class="note">For BRZ, GR86, G37, and Q60 owners in the US.</p>
 
     <div id="thanks" class="thanks" tabindex="-1">
       <h2>You're on the list.</h2>
-      <p>We'll email you when it's ready for a real drive.</p>
       <p><a href="./">Back to Garumi</a></p>
     </div>
 
     <form action="https://formsubmit.co/guybelo@me.com" method="POST" aria-label="Get notified">
-      <input type="hidden" name="_subject" value="Garumi waitlist" />
+      <input type="hidden" name="_subject" value="Garumi" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_next" value="https://garumi.com/#thanks" />
@@ -188,7 +173,6 @@
       </div>
 
       <button type="submit">Get notified</button>
-      <p class="support">when it's ready for a real drive.</p>
     </form>
   </main>
   <script>

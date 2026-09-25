@@ -1,11 +1,8 @@
 # Garumi landing
 
-Minimal waitlist page.
+Your car reports. We don't guess from symptoms.
 
-Know your car - from the car, not from a chat.
-
-Built first for BRZ, GR86, G37, and Q60 owners in the US.
-We're finishing the always-on path. Nothing to buy yet.
+For BRZ, GR86, G37, and Q60 owners in the US.
 
 - **Interim URL (after Pages):** https://bgenome.github.io/garumi-landing/
 - **Custom domain:** https://garumi.com
